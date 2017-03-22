@@ -1,0 +1,24 @@
+<div class="container">
+    <br>
+    <h3>Gross Margin Future by Fiscal Period</h3>
+    <br>
+    <form class="form-horizontal">
+        <label>Filter by Dates Range</label>
+        <div class="form-group">
+            <div class="col-xs-6 col-sm-4">
+                <label>From:</label>
+                <input ng-model="filter_dateFrom" type="date" class="form-control">
+            </div>
+            <div class="col-xs-6 col-sm-4">
+                <label>To:</label>
+                <input ng-model="filter_dateTo" type="date" class="form-control">
+            </div>
+        </div>
+    </form>
+    <div class="row">
+        <div class="col-sm-2 col-sm-offset-10">
+            <button class="btn btn-warning btn-block" ng-click="clearFilters();">Clean Filters</button>
+            <a href="" ng-href="{{baseURL}}Report/GrossMarginFutureByFiscalPeriod/{{currentUser.UserName}}?date_from={{filter_dateFrom.getTime()}}&date_to={{filter_dateTo.getTime()}}" class="btn btn-primary btn-block">Download</a>
+        </div>
+    </div>
+</div>
