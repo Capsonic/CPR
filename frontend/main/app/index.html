@@ -37,10 +37,16 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#/">Capsonic Programmed Reports</a>
+                    <p class="navbar-brand hidden-xs" style="padding:5px;margin:0;margin-right:15px;"><img src="images/cap-auto.png" style="height: 100%;" class="img-responsive" /></p>
+                    <a class="navbar-brand" href="#!/">Capsonic Programmed Reports</a>
                     <div class="navbar-head navbar-brand" ng-activity-indicator style="padding-top: 8px;"></div>
                 </div>
                 <div class="collapse navbar-collapse" id="js-navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span> {{currentUser.UserName}} </a>
+                        </li>
+                    </ul>
                     <ul class="nav navbar-nav navbar-right" ng-if="true">
                         <li class="dropdown">
                             <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{theme.name}} <span class="caret"></span></a>

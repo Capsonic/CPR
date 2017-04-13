@@ -84,7 +84,10 @@ namespace ReportsMain
                        SUM_TotalSalesAmount = group.Sum(i => i.TotalSalesAmount),
 
                        SUM_PastDue_Quantity = group.Where(j => j.FutureOrCurrent == "PastDue").Sum(k => k.CORemainRequiredQuantity),
-                       SUM_PastDue_Amount = group.Where(j => j.FutureOrCurrent == "PastDue").Sum(k => k.CORemainingRequiredAmount)
+                       SUM_PastDue_Amount = group.Where(j => j.FutureOrCurrent == "PastDue").Sum(k => k.CORemainingRequiredAmount),
+
+                       //SUM_CurrentPeriod_Quantity = group.Where(j => j.FutureOrCurrent == "Current").Sum(k => k.CORemainRequiredQuantity),
+                       //SUM_CurrentPeriod_Amount = group.Where(j => j.FutureOrCurrent == "Current").Sum(k => k.CORemainingRequiredAmount)
                    }).ToList();
 
                 var join = from item in allGroupped
@@ -95,7 +98,7 @@ namespace ReportsMain
                            select new
                            {
                                grouppedItem = item,
-                               curentP = currOrEmpty
+                               currentP = currOrEmpty
                                //futureP = futureOrEmpty
                            };
                 #endregion
@@ -129,7 +132,7 @@ namespace ReportsMain
                                        .OrderBy(i => i.RequiredDateFiscalYear)
                                        .ThenBy(i => i.RequiredDateFiscalPeriod)
                                        .ToList();
-
+                
                 minFuturePeriod = theFuturePeriods.First().RequiredDateFiscalPeriod;
                 maxFuturePeriod = theFuturePeriods.Last().RequiredDateFiscalPeriod;
                 countFuturePeriods = theFuturePeriods.Count();
@@ -180,6 +183,9 @@ namespace ReportsMain
                 InsertLabel("Total Sales Quantity", AlignMode: TextAlign.CENTER);
                 InsertLabel("Total Sales Amount", AlignMode: TextAlign.CENTER);
 
+                InsertLabel("Current Sales Quantity", AlignMode: TextAlign.CENTER);
+                InsertLabel("Current Sales Amount", AlignMode: TextAlign.CENTER);
+
                 InsertLabel("Past Due Quantity", AlignMode: TextAlign.CENTER);
                 InsertLabel("Past Due Amount", AlignMode: TextAlign.CENTER); //added
 
@@ -211,6 +217,13 @@ namespace ReportsMain
                 //Total Sales Amount
                 InsertFormula("=SUM(" + ws.Cells[CurrentRow() + 1, CurrentCol()].Address + ":" +
                                       ws.Cells[join.Count() + 3, CurrentCol()].Address + ")", Decimals: Precision.TWO, Type: NumberTypes.CURRENCY);
+
+                //Current Quantity
+                InsertFormula("=SUM(" + ws.Cells[CurrentRow() + 1, CurrentCol()].Address + ":" +
+                                      ws.Cells[join.Count() + 3, CurrentCol()].Address + ")", Type: NumberTypes.NUMBER);
+                //Current Amount
+                InsertFormula("=SUM(" + ws.Cells[CurrentRow() + 1, CurrentCol()].Address + ":" +
+                                      ws.Cells[join.Count() + 3, CurrentCol()].Address + ")", Type: NumberTypes.CURRENCY);
 
                 //Past Due Quantity
                 InsertFormula("=SUM(" + ws.Cells[CurrentRow() + 1, CurrentCol()].Address + ":" +
@@ -259,18 +272,21 @@ namespace ReportsMain
                     InsertNumber(item.grouppedItem.Key.Inventory);
                     InsertCurrency(item.grouppedItem.Key.ItemControllingNetUnitPrice, Decimals: Precision.FOUR);
 
-                    if (item.curentP != null)
+                    if (item.currentP != null)
                     {
-                        InsertNumber(item.curentP.SUM_TotalSalesQuantity);
-                        InsertCurrency(item.curentP.SUM_TotalSalesAmount, Decimals: Precision.TWO);
+                        InsertNumber(item.currentP.SUM_TotalSalesQuantity);
+                        InsertCurrency(item.currentP.SUM_TotalSalesAmount, Decimals: Precision.TWO);
 
-                        InsertNumber(item.curentP.SUM_PastDue_Quantity);
-                        InsertNumber(item.curentP.SUM_PastDue_Amount);
+                        InsertNumber(item.currentP.SUM_TotalSalesQuantity - item.currentP.SUM_PastDue_Quantity);
+                        InsertCurrency(item.currentP.SUM_TotalSalesAmount - item.currentP.SUM_PastDue_Amount);
 
-                        InsertNumber(item.curentP.SUM_NetShippedQuantity);                        
-                        InsertCurrency(item.curentP.SUM_NetShippedAmount, Decimals: Precision.TWO);
+                        InsertNumber(item.currentP.SUM_PastDue_Quantity);
+                        InsertCurrency(item.currentP.SUM_PastDue_Amount);
 
-                        InsertCurrency(item.curentP.SUM_MarginAmount, Decimals: Precision.TWO);
+                        InsertNumber(item.currentP.SUM_NetShippedQuantity);                        
+                        InsertCurrency(item.currentP.SUM_NetShippedAmount, Decimals: Precision.TWO);
+
+                        InsertCurrency(item.currentP.SUM_MarginAmount, Decimals: Precision.TWO);
                     }
                     var futureList = futurePeriods.Where(f => f.ItemKey == item.grouppedItem.Key.ItemKey);
                     foreach (var fut in futureList)
@@ -300,6 +316,8 @@ namespace ReportsMain
                 ws.Column(11).Width = 15;               //K
                 ws.Column(12).Width = 15;               //L
                 ws.Column(13).Width = 15;               //M
+                ws.Column(14).Width = 15;               //L
+                ws.Column(15).Width = 15;               //M
 
                 deduceColPageBreak();
                 #endregion
@@ -362,8 +380,8 @@ namespace ReportsMain
 
             public double SUM_PastDue_Quantity { get; set; }
             public double SUM_PastDue_Amount { get; set; }
-            public double SUM_CurrentPeriod_Quantity { get; set; }
-            public double SUM_CurrentPeriod_Amount { get; set; }
+            //public double SUM_CurrentPeriod_Quantity { get; set; }
+            //public double SUM_CurrentPeriod_Amount { get; set; }
             #endregion
 
         }

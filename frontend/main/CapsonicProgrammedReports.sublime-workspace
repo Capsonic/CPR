@@ -307,75 +307,36 @@
 			"file": "app/index.html",
 			"settings":
 			{
-				"buffer_size": 5828,
+				"buffer_size": 6476,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		},
 		{
+			"file": "app/scripts/controllers/main.js",
 			"settings":
 			{
-				"buffer_size": 0,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/C/gitRepositories/CURRENT/ScanPackNG/frontend/admin/bower.json",
-			"settings":
-			{
-				"buffer_size": 704,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/C/gitRepositories/CURRENT/ScanPackNG/frontend/admin/package.json",
-			"settings":
-			{
-				"buffer_size": 1258,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "app/scripts/services/appconfig.js",
-			"settings":
-			{
-				"buffer_size": 286,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "app/scripts/app.js",
-			"settings":
-			{
-				"buffer_size": 1582,
+				"buffer_size": 1850,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"contents": "Searching 50 files for \"logout\"\n\nC:\\gitRepositories\\CURRENT\\CapsonicProgrammedReports\\frontend\\main\\app\\index.html:\n   46                              <a href=\"\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\"><span class=\"glyphicon glyphicon-user\"></span> {{currentUser.Value}} <span ng-if=\"currentUser.Value\" class=\"caret\"></span></a>\n   47                              <ul class=\"dropdown-menu\">\n   48:                                 <li><a href=\"\" ng-click=\"logOut()\">Salir</a></li>\n   49                              </ul>\n   50                          </li>\n\n1 match in 1 file\n",
+			"file": "app/views/grossmarginfuturebyfiscalperiod.html",
 			"settings":
 			{
-				"buffer_size": 641,
-				"line_ending": "Windows",
-				"name": "Find Results",
-				"scratch": true
+				"buffer_size": 1117,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "bower.json",
+			"file": "app/scripts/controllers/grossmarginfuturebyfiscalperiod.js",
 			"settings":
 			{
-				"buffer_size": 704,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "package.json",
-			"settings":
-			{
-				"buffer_size": 1258,
-				"line_ending": "Windows"
+				"buffer_size": 863,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
 			}
 		}
 	],
@@ -387,9 +348,13 @@
 	"command_palette":
 	{
 		"height": 392.0,
-		"last_filter": "new",
+		"last_filter": "setxml",
 		"selected_items":
 		[
+			[
+				"setxml",
+				"Set Syntax: XML"
+			],
 			[
 				"new",
 				"Tasks: New document"
@@ -686,25 +651,35 @@
 	[
 		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/frontend/main/app",
 		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/frontend/main/app/images",
-		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/frontend/main/app/scripts",
-		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/frontend/main/app/scripts/controllers",
-		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/frontend/main/app/scripts/directives",
-		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/frontend/main/app/scripts/services",
-		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/frontend/main/app/scripts/vendor",
-		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/frontend/main/app/styles",
 		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/frontend/main/app/views",
-		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/frontend/reusable"
+		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/frontend/reusable",
+		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/frontend/reusable/images"
 	],
 	"file_history":
 	[
+		"//rsserver/wwwroot2/CPR/index.html",
+		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/frontend/main/app/views/reports.html",
+		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/frontend/main/app/scripts/controllers/reports.js",
 		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/frontend/main/app/scripts/services/appconfig.js",
-		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/frontend/reusable/scripts/directives/commonDirectives.js",
+		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/frontend/main/app/views/grossmarginfuturebyfiscalperiod.html",
+		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/frontend/main/app/scripts/app.js",
+		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/frontend/main/app/scripts/controllers/grossmarginfuturebyfiscalperiod.js",
+		"//rsserver/wwwroot2/CPR_Backend/Web.config",
+		"//rsserver/wwwroot2/CPR/scripts/scripts.95fc86de.js",
+		"//rsserver/wwwroot2/CPR/scripts/vendor.93e07796.js",
+		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/frontend/main/app/index.html",
+		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/frontend/main/app/styles/main.scss",
+		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/backend/CapsonicProgrammedReports.sln",
+		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/backend/Reports_WEB_API/Web.config",
+		"/C/gitRepositories/CURRENT/ScanPackNG/frontend/admin/bower.json",
+		"/C/gitRepositories/CURRENT/ScanPackNG/frontend/admin/package.json",
 		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/frontend/main/bower.json",
+		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/frontend/main/package.json",
+		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/frontend/reusable/scripts/directives/commonDirectives.js",
 		"/C/gitRepositories/CURRENT/ScanPackNG/docs/Todo.tasks",
 		"/C/gitRepositories/CURRENT/ScanPackNG/frontend/admin/app/scripts/directives/users.js",
 		"/C/gitRepositories/CURRENT/ScanPackNG/frontend/admin/app/views/userslist.html",
 		"/C/gitRepositories/CURRENT/ScanPackNG/frontend/admin/app/scripts/app.js",
-		"/C/gitRepositories/CURRENT/ScanPackNG/frontend/admin/bower.json",
 		"/C/gitRepositories/CURRENT/ScanPackNG/frontend/reusable/scripts/services/listController.js",
 		"/C/gitRepositories/CURRENT/ScanPackNG/frontend/admin/app/scripts/controllers/reports.js",
 		"/C/gitRepositories/CURRENT/ScanPackNG/frontend/reusable/scripts/services/crud_services.js",
@@ -809,26 +784,11 @@
 		"/C/gitRepositories/CURRENT/CMD/frontend/Main/app/views/department-metrics.html",
 		"/C/gitRepositories/CURRENT/CMD/frontend/Main/app/scripts/controllers/department-metrics.js",
 		"/C/gitRepositories/CURRENT/CMD/frontend/Main/app/styles/main.scss",
-		"/C/gitRepositories/CURRENT/IQS/gitlog.txt",
-		"/C/gitRepositories/CURRENT/CMD/CMD.todo",
-		"//RSSERVER/wwwroot2/CV/scripts/scripts.024423d2.js",
-		"/C/gitRepositories/CURRENT/CMD/frontend/Main/bower_components/hover/css/hover.css",
-		"/C/gitRepositories/CURRENT/CMD/frontend/Reusable/alertify-defaults.js",
-		"/C/gitRepositories/CURRENT/CMD/frontend/Main/app/scripts/reusable/ngselectize.js",
-		"/C/gitRepositories/CURRENT/CMD/frontend/Reusable/yearselectize.js",
-		"/C/gitRepositories/CURRENT/CMD/frontend/Main/app/scripts/controllers/dashboards.js",
-		"/C/gitRepositories/CURRENT/CMD/frontend/Main/app/scripts/reusable/BaseServices/CRUD_Factory.js",
-		"/C/gitRepositories/CURRENT/CMD/frontend/Main/app/views/metrichistory.html",
-		"/C/gitRepositories/CURRENT/CMD/frontend/Reusable/ngselectize.js",
-		"/C/gitRepositories/CURRENT/CMD/frontend/Main/bower.json",
-		"/C/gitRepositories/CURRENT/CMD/frontend/Main/app/views/login.html",
-		"/C/gitRepositories/CURRENT/CMD/New Authentication System/login.html",
-		"/C/gitRepositories/CURRENT/CMD/New Authentication System/authservice.js",
-		"/C/Users/apacheco/Desktop/alive hosts.txt"
+		"/C/gitRepositories/CURRENT/IQS/gitlog.txt"
 	],
 	"find":
 	{
-		"height": 36.0
+		"height": 34.0
 	},
 	"find_in_files":
 	{
@@ -846,6 +806,19 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"data",
+			"h2",
+			"catWorkOrderService",
+			"GETDATE()",
+			"@EndDate",
+			"@startdate",
+			"id=\"input\"",
+			"scripts",
+			"h4",
+			"h3",
+			"h2",
+			"ng-href",
+			"h2",
 			"logout",
 			"83",
 			"null",
@@ -960,20 +933,7 @@
 			"_loadEntity",
 			"addtopare",
 			"$timeout",
-			"workstationConfig",
-			"WorkstationConfig",
-			"workstationConfig",
-			"workstationName",
-			"appApp",
-			"$location.",
-			"workstationConfig",
-			"localStorageService",
-			":",
-			"package",
-			"data",
-			"THEME",
-			"boots",
-			"login"
+			"workstationConfig"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1005,78 +965,21 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5828,
+						"buffer_size": 6476,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3170,
-								3170
+								1070,
+								1070
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/HTML/HTML.sublime-syntax",
 							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 24209.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 0,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "/C/gitRepositories/CURRENT/ScanPackNG/frontend/admin/bower.json",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 704,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JSON.sublime-syntax",
-							"tab_size": 2,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
@@ -1087,78 +990,20 @@
 					"type": "text"
 				},
 				{
-					"buffer": 3,
-					"file": "/C/gitRepositories/CURRENT/ScanPackNG/frontend/admin/package.json",
+					"buffer": 1,
+					"file": "app/scripts/controllers/main.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1258,
+						"buffer_size": 1850,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								459,
-								459
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JSON.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 720.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "app/scripts/services/appconfig.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 286,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "app/scripts/app.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1582,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								97,
-								98
+								232,
+								250
 							]
 						],
 						"settings":
@@ -1171,119 +1016,67 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 641,
-						"regions":
-						{
-							"match":
-							{
-								"flags": 112,
-								"regions":
-								[
-									[
-										519,
-										525
-									]
-								],
-								"scope": ""
-							}
-						},
-						"selection":
-						[
-							[
-								520,
-								520
-							]
-						],
-						"settings":
-						{
-							"detect_indentation": false,
-							"line_numbers": false,
-							"output_tag": 1,
-							"result_base_dir": "",
-							"result_file_regex": "^([^ \t].*):$",
-							"result_line_regex": "^ +([0-9]+):",
-							"scroll_past_end": true,
-							"syntax": "Packages/Default/Find Results.hidden-tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				}
-			]
-		},
-		{
-			"selected": 1,
-			"sheets":
-			[
-				{
-					"buffer": 7,
-					"file": "bower.json",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 704,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								554,
-								554
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JSON.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
 					"stack_index": 2,
 					"type": "text"
 				},
 				{
-					"buffer": 8,
-					"file": "package.json",
+					"buffer": 2,
+					"file": "app/views/grossmarginfuturebyfiscalperiod.html",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1258,
+						"buffer_size": 1117,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								957,
+								957
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JSON.sublime-syntax",
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 480.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "app/scripts/controllers/grossmarginfuturebyfiscalperiod.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 863,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								736,
+								736
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
 					"type": "text"
 				}
 			]
@@ -1291,7 +1084,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 28.0
+		"height": 26.0
 	},
 	"input":
 	{
@@ -1306,18 +1099,11 @@
 				0,
 				1,
 				1
-			],
-			[
-				1,
-				0,
-				2,
-				1
 			]
 		],
 		"cols":
 		[
 			0.0,
-			0.5,
 			1.0
 		],
 		"rows":
@@ -1343,7 +1129,7 @@
 	"project": "CapsonicProgrammedReports.sublime-project",
 	"replace":
 	{
-		"height": 52.0
+		"height": 48.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -1353,16 +1139,76 @@
 		"selected_items":
 		[
 			[
-				"appjs",
-				"app\\scripts\\app.js"
+				"ind",
+				"app\\index.html"
+			],
+			[
+				"grosm",
+				"app\\scripts\\controllers\\grossmarginfuturebyfiscalperiod.js"
+			],
+			[
+				"groo",
+				"app\\views\\grossmarginfuturebyfiscalperiod.html"
+			],
+			[
+				"in",
+				"app\\index.html"
+			],
+			[
+				"repohtm",
+				"app\\views\\reports.html"
+			],
+			[
+				"mainjs",
+				"app\\scripts\\controllers\\main.js"
+			],
+			[
+				"appcon",
+				"app\\scripts\\services\\appconfig.js"
+			],
+			[
+				"repoht",
+				"app\\views\\reports.html"
+			],
+			[
+				"repojs",
+				"app\\scripts\\controllers\\reports.js"
 			],
 			[
 				"appconf",
 				"app\\scripts\\services\\appconfig.js"
 			],
 			[
-				"ind",
+				"indh",
 				"app\\index.html"
+			],
+			[
+				"repo",
+				"app\\views\\reports.html"
+			],
+			[
+				"reporth",
+				"app\\views\\reports.html"
+			],
+			[
+				"appjs",
+				"app\\scripts\\app.js"
+			],
+			[
+				"main",
+				"app\\styles\\main.scss"
+			],
+			[
+				"grosjs",
+				"app\\scripts\\controllers\\grossmarginfuturebyfiscalperiod.js"
+			],
+			[
+				"gross",
+				"app\\views\\grossmarginfuturebyfiscalperiod.html"
+			],
+			[
+				"repoth",
+				"app\\views\\reports.html"
 			],
 			[
 				"vali",
@@ -1381,16 +1227,8 @@
 				"reusable\\scripts\\services\\crud_services.js"
 			],
 			[
-				"repohtm",
-				"admin\\app\\views\\reports.html"
-			],
-			[
 				"ngselec",
 				"reusable\\scripts\\directives\\ngselectize.js"
-			],
-			[
-				"repojs",
-				"admin\\app\\scripts\\controllers\\reports.js"
 			],
 			[
 				"userslihtm",
@@ -1425,15 +1263,7 @@
 				"app\\views\\main.html"
 			],
 			[
-				"main",
-				"app\\styles\\main.scss"
-			],
-			[
 				"minj",
-				"app\\scripts\\controllers\\main.js"
-			],
-			[
-				"mainjs",
 				"app\\scripts\\controllers\\main.js"
 			],
 			[
@@ -1521,10 +1351,6 @@
 				"app\\scripts\\directives\\comandbarcodes.js"
 			],
 			[
-				"appcon",
-				"app\\scripts\\services\\appconfig.js"
-			],
-			[
 				"bar",
 				"app\\views\\comandbarcodes.html"
 			],
@@ -1607,10 +1433,6 @@
 			[
 				"mainscs",
 				"app\\styles\\main.scss"
-			],
-			[
-				"in",
-				"app\\index.html"
 			],
 			[
 				"servi",
@@ -1827,42 +1649,6 @@
 			[
 				"relationjs",
 				"app\\scripts\\controllers\\relationator.js"
-			],
-			[
-				"depmetrihtm",
-				"app\\views\\department-metrics.html"
-			],
-			[
-				"depmejs",
-				"app\\scripts\\controllers\\department-metrics.js"
-			],
-			[
-				"dasdephtm",
-				"app\\views\\dashboard-departments.html"
-			],
-			[
-				"dashdep",
-				"app\\views\\dashboard-departments.html"
-			],
-			[
-				"m",
-				"app\\styles\\main.scss"
-			],
-			[
-				"metrisj",
-				"app\\scripts\\controllers\\metrics.js"
-			],
-			[
-				"hisjs",
-				"app\\scripts\\directives\\metrichistory.js"
-			],
-			[
-				"hisotryjs",
-				"app\\scripts\\directives\\metrichistory.js"
-			],
-			[
-				"crudser",
-				"app\\scripts\\services\\crud_services.js"
 			]
 		],
 		"width": 0.0
@@ -1870,16 +1656,20 @@
 	"select_project":
 	{
 		"height": 500.0,
-		"last_filter": "capso",
+		"last_filter": "scanadmin",
 		"selected_items":
 		[
 			[
-				"capso",
-				"C:\\gitRepositories\\CURRENT\\ProgrammedCapsonicReports\\frontend\\main\\CapsonicProgrammedReports.sublime-workspace"
+				"scanadmin",
+				"C:\\Users\\apacheco\\Documents\\SublimeProjects\\scanPackAdmin.sublime-project"
 			],
 			[
 				"scan",
 				"C:\\Users\\apacheco\\Documents\\SublimeProjects\\scanPackNG.sublime-project"
+			],
+			[
+				"capso",
+				"C:\\gitRepositories\\CURRENT\\ProgrammedCapsonicReports\\frontend\\main\\CapsonicProgrammedReports.sublime-workspace"
 			],
 			[
 				"scanng",
@@ -1961,7 +1751,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 232.0,
+	"side_bar_width": 281.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

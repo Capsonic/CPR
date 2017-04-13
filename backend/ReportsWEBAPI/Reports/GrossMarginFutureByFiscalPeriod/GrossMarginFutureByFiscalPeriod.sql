@@ -346,3 +346,5 @@ LEFT OUTER JOIN _CAP_Industry ON PastDueAndCurrentCOs.ItemClass5 = _CAP_Industry
 LEFT OUTER JOIN _CAP_MarketSegment ON PastDueAndCurrentCOs.ItemClass4 = _CAP_MarketSegment.SegmentCode
 LEFT OUTER JOIN _CAP_Business ON PastDueAndCurrentCOs.ItemClass6 = _CAP_Business.BusinessCode
 LEFT OUTER JOIN _CAP_Class_Ref ON PastDueAndCurrentCOs.ItemReference1 = _CAP_Class_Ref.ITEM_REF1
+
+--where ItemKey = 50386

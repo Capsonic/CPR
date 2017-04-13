@@ -16,9 +16,10 @@
         </div>
     </form>
     <div class="row">
-        <div class="col-sm-2 col-sm-offset-10">
+        <!-- <div class="col-sm-3 col-sm-offset-9 col-md-2 col-md-offset-10"> -->
+        <div class="col-xs-12 col-sm-3 col-md-2 pull-right">
             <button class="btn btn-warning btn-block" ng-click="clearFilters();">Clean Filters</button>
-            <a href="" ng-href="{{baseURL}}Report/GrossMarginFutureByFiscalPeriod/{{currentUser.UserName}}?date_from={{filter_dateFrom.getTime()}}&date_to={{filter_dateTo.getTime()}}" class="btn btn-primary btn-block">Download</a>
+            <a href="" ng-href="{{baseURL}}Report/GrossMarginFutureByFiscalPeriod/{{userName}}?date_from={{filter_dateFrom.getTime()}}&date_to={{filter_dateTo.getTime()}}" class="btn btn-primary btn-block">Download</a>
         </div>
     </div>
 </div>
