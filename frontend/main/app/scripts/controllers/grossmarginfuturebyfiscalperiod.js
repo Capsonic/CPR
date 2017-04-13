@@ -20,6 +20,8 @@ angular.module('appApp').controller('GrossmarginfuturebyfiscalperiodCtrl', funct
     }).then(function(reponse) {
         $rootScope.currentUser = reponse.data;
         $rootScope.userName = $rootScope.currentUser.UserName.replace('CAPSONIC\\', '');
+    }, function() {
+        alertify.alert('Incorrect Login');
     });
 
     $scope.clearFilters = function() {

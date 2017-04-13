@@ -18,6 +18,8 @@ angular.module('appApp').controller('MainCtrl', function($scope, localStorageSer
         }
     }).then(function(reponse) {
         $rootScope.currentUser = reponse.data;
+    }, function() {
+        alertify.alert('Incorrect Login');
     });
 
     $scope.bootstraps = [

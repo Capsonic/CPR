@@ -16,8 +16,9 @@
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
-    <link rel="stylesheet" type="text/css" href="styles/theme-default.css">
-    <link rel="stylesheet" type="text/css" ng-if="theme" ng-href="styles/{{theme.url}}.css">
+    <!-- <link rel="stylesheet" type="text/css" href="styles/theme-default.css"> -->
+    <!-- <link rel="stylesheet" type="text/css" ng-if="theme" ng-href="styles/{{theme.url}}.css"> -->
+    <link rel="stylesheet" type="text/css" ng-if="theme" ng-href="styles/theme-paper.css">
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
 </head>
@@ -47,14 +48,14 @@
                             <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span> {{currentUser.UserName}} </a>
                         </li>
                     </ul>
-                    <ul class="nav navbar-nav navbar-right" ng-if="true">
+                    <!-- <ul class="nav navbar-nav navbar-right" ng-if="true">
                         <li class="dropdown">
                             <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{theme.name}} <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li ng-repeat="aTheme in bootstraps"><a href="" ng-click="setTheme($index)">{{aTheme.name}}</a></li>
                             </ul>
                         </li>
-                    </ul>
+                    </ul> -->
                     <ul class="nav navbar-nav navbar-right">
                         <li><a ng-href="#!/reports">Home</a></li>
                     </ul>
