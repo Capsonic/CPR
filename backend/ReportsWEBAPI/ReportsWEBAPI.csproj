@@ -106,11 +106,22 @@
     <Content Include="Global.asax" />
     <Content Include="Images\cap-auto.png" />
     <Content Include="index.html" />
+    <Content Include="Reports\GrossMarginFutureBasedOnMasterSchedule\FiscalPeriod.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\GrossMarginFutureBasedOnMasterSchedule\GrossMarginFutureBasedOnMasterSchedule.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\GrossMarginFutureByFiscalPeriod\FiscalPeriod.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Reports\GrossMarginFutureByFiscalPeriod\GrossMarginFutureByFiscalPeriod.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="theme-simplex.css" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
@@ -121,6 +132,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reports\GrossMarginFutureBasedOnMasterSchedule\GrossMarginFutureBasedOnMasterSchedule.cs" />
     <Compile Include="Reports\GrossMarginFutureByFiscalPeriod\GrossMarginFutureByFiscalPeriod.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,18 +1,22 @@
 <div class="container">
     <br>
-    <h3>Gross Margin Future by Fiscal Period</h3>
     <br>
     <form class="form-horizontal">
-        <label>Filter by Dates Range</label>
+        <legend>Gross Margin Future by Fiscal Period</legend>
+        <pre class="well well-sm">This report works as following:
+        -It's categorized in three Fiscal Periods (<b>Current Period</b>, <b>Second Period</b> and <b>Third Period</b>).
+        -Fiscal Periods' dates are taken from Fourth Shift database.
+        -<b>Current Period</b> starts from <b>Start Date</b> parameter and ends to what FS says to this <b>Start Date</b>'s Period to end.
+        -Column <b>Past Due</b> gets calculated with <b>DemandSupply.RequiredDate</b> < <b>Today</b> parameter.</pre>
         <div class="form-group">
             <div class="col-xs-6 col-sm-4">
-                <label>From:</label>
+                <label>Start Date:</label>
                 <input ng-model="filter_dateFrom" type="date" class="form-control">
             </div>
-            <div class="col-xs-6 col-sm-4">
+            <!-- <div class="col-xs-6 col-sm-4">
                 <label>To:</label>
                 <input ng-model="filter_dateTo" type="date" class="form-control">
-            </div>
+            </div> -->
         </div>
     </form>
     <div class="row">

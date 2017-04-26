@@ -16,31 +16,38 @@ namespace ReportsMain
         }
 
         public DateTime paramDateFrom { get; set; }
-        public DateTime paramDateTo { get; set; }
 
         protected override void define()
         {
             Dictionary<short, Dictionary<short, int>> colForYearVolume = new Dictionary<short, Dictionary<short, int>>();
-            int colStart = 14;
-            int minFuturePeriod, maxFuturePeriod, countFuturePeriods;
+            int colStartCurrentPeriod = 7, colStartSecondPeriod = 16, colStartThirdPeriod = 20;
 
+            string sqlFiscalPeriod = File.ReadAllText(HostingEnvironment.MapPath("~/Reports/GrossMarginFutureByFiscalPeriod/FiscalPeriod.sql"));
             string sql = File.ReadAllText(HostingEnvironment.MapPath("~/Reports/GrossMarginFutureByFiscalPeriod/GrossMarginFutureByFiscalPeriod.sql"));
 
             using (var ctx = new FourthShiftContext())
             {
+                #region SOURCE
+                var fiscalPeriods = ctx.Database.SqlQuery<CurrentFiscalPeriod>(sqlFiscalPeriod,
+                    new SqlParameter("@StartDate", paramDateFrom)).ToList();
 
-                #region DATASETS
-                //paramDateFrom = DateTime.Parse("2017/3/6 12:00:00 AM");
-                //paramDateTo = DateTime.Parse("2017/5/27 12:00:00 AM");
+                if (fiscalPeriods == null || fiscalPeriods.Count == 0)
+                {
+                    throw new Exception("The specified params resulted on an empty report");
+                }
+
+                DateTime dCurrentPeriodEndDate = fiscalPeriods[0].PeriodEndDate;
+                DateTime dSecondPeriodEndDate = fiscalPeriods[1].PeriodEndDate;
+                DateTime dThirdPeriodEndDate = fiscalPeriods[2].PeriodEndDate;
+
                 var dataset = ctx.Database.SqlQuery<Item>(sql,
                         new SqlParameter("@StartDate", paramDateFrom),
-                        new SqlParameter("@EndDate", paramDateTo)).ToList();
+                        new SqlParameter("@currentPeriodEndDate", dCurrentPeriodEndDate),
+                        new SqlParameter("@secondPeriodEndDate", dSecondPeriodEndDate),
+                        new SqlParameter("@thirdPeriodEndDate", dThirdPeriodEndDate)).ToList();
+                #endregion
 
-                var currentPeriodInfo = dataset.FirstOrDefault();
-                if (currentPeriodInfo == null)
-                {
-                    throw new Exception("Report with current params results on an empty report.");
-                }
+                #region DATASETS
 
                 var allGroupped = dataset
                     .GroupBy(i => new
@@ -52,7 +59,7 @@ namespace ReportsMain
                         i.Inventory
                     })
                     .OrderBy(i => i.Key.ItemReference1)
-                    .ThenBy(i => i.Key.ItemNumber)     
+                    .ThenBy(i => i.Key.ItemNumber)
                     .Select(i => new
                     {
                         Key = new
@@ -64,13 +71,13 @@ namespace ReportsMain
                             Inventory = i.Key.Inventory,
                             ItemControllingNetUnitPrice = i.OrderByDescending(j => j.RequiredDate).Select(j => j.ItemControllingNetUnitPrice).FirstOrDefault()
                         }
-                    })                    
-                    .ToList();
+                    })
+                    .ToList();//TODO verify ItemControllingNetUnitPrice
 
-                #region Current Period
+                #region Past Due
 
-                var currentFiscalPeriod = dataset
-                   .Where(i => i.RequiredDatePeriodEndDate <= i.CurrentPeriodEndDate)
+                var pastDue = dataset
+                   .Where(i => i.Period == "PastDue")
                    .GroupBy(i => new
                    {
                        i.ItemKey
@@ -83,69 +90,72 @@ namespace ReportsMain
                        SUM_NetShippedQuantity = group.Sum(i => i.NetShippedQuantity),
                        SUM_TotalSalesAmount = group.Sum(i => i.TotalSalesAmount),
 
-                       SUM_PastDue_Quantity = group.Where(j => j.FutureOrCurrent == "PastDue").Sum(k => k.CORemainRequiredQuantity),
-                       SUM_PastDue_Amount = group.Where(j => j.FutureOrCurrent == "PastDue").Sum(k => k.CORemainingRequiredAmount),
+                       SUM_PastDue_Quantity = group.Sum(k => k.CORemainRequiredQuantity),
+                       SUM_PastDue_Amount = group.Sum(k => k.CORemainingRequiredAmount),
+                   }).ToList();
+                #endregion
 
+                #region Current Period
+
+                var currentFiscalPeriod = dataset
+                   .Where(i => i.Period == "Current")
+                   .GroupBy(i => new
+                   {
+                       i.ItemKey
+                   }).Select(group => new Item
+                   {
+                       ItemKey = group.Key.ItemKey,
+                       SUM_TotalSalesQuantity = group.Sum(i => i.TotalSalesQuantity),
+                       SUM_MarginAmount = group.Sum(i => i.MarginAmount),
+                       SUM_NetShippedAmount = group.Sum(i => i.NetShippedAmount),
+                       SUM_NetShippedQuantity = group.Sum(i => i.NetShippedQuantity),
+                       SUM_TotalSalesAmount = group.Sum(i => i.TotalSalesAmount),
+
+                       //SUM_PastDue_Quantity = group.Sum(k => k.CORemainRequiredQuantity),
+                       //SUM_PastDue_Amount = group.Sum(k => k.CORemainingRequiredAmount),
                        //SUM_CurrentPeriod_Quantity = group.Where(j => j.FutureOrCurrent == "Current").Sum(k => k.CORemainRequiredQuantity),
                        //SUM_CurrentPeriod_Amount = group.Where(j => j.FutureOrCurrent == "Current").Sum(k => k.CORemainingRequiredAmount)
                    }).ToList();
-
-                var join = from item in allGroupped
-                           join curr in currentFiscalPeriod on item.Key.ItemKey equals curr.ItemKey into c
-                           from currOrEmpty in c.DefaultIfEmpty()
-                               //join future in futurePeriods on item.Key.ItemKey equals future.ItemKey into f
-                               //from futureOrEmpty in f.DefaultIfEmpty()
-                           select new
-                           {
-                               grouppedItem = item,
-                               currentP = currOrEmpty
-                               //futureP = futureOrEmpty
-                           };
                 #endregion
 
-                #region Future Period
-                var futurePeriods = dataset
-                    .Where(i => i.RequiredDatePeriodEndDate > i.CurrentPeriodEndDate)
-                    .GroupBy(i => new
-                    {
-                        i.ItemKey,
-                        i.RequiredDateFiscalYear,
-                        i.RequiredDateFiscalPeriod
-                    }).Select(group => new Item
-                    {
-                        ItemKey = group.Key.ItemKey,
-                        RequiredDateFiscalYear = group.Key.RequiredDateFiscalYear,
-                        RequiredDateFiscalPeriod = group.Key.RequiredDateFiscalPeriod,                        
-                        SUM_TotalSalesQuantity = group.Sum(i => i.TotalSalesQuantity),
-                        SUM_TotalSalesAmount = group.Sum(i => i.TotalSalesAmount),
-                        SUM_MarginAmount = group.Sum(i => i.MarginAmount)
-                    }).ToList();
+                #region Second Period
+                var secondFiscalPeriod = dataset
+                   .Where(i => i.Period == "SecondPeriod")
+                   .GroupBy(i => new
+                   {
+                       i.ItemKey
+                   }).Select(group => new Item
+                   {
+                       ItemKey = group.Key.ItemKey,
+                       SUM_TotalSalesQuantity = group.Sum(i => i.TotalSalesQuantity),
+                       SUM_MarginAmount = group.Sum(i => i.MarginAmount),
+                       SUM_NetShippedAmount = group.Sum(i => i.NetShippedAmount),
+                       SUM_NetShippedQuantity = group.Sum(i => i.NetShippedQuantity),
+                       SUM_TotalSalesAmount = group.Sum(i => i.TotalSalesAmount),
 
-                var theFuturePeriods = dataset
-                                       .Where(i => i.RequiredDatePeriodEndDate > i.CurrentPeriodEndDate)
-                                       .GroupBy(i => new
-                                       {
-                                           i.RequiredDateFiscalYear,
-                                           i.RequiredDateFiscalPeriod
-                                       })
-                                       .Select(i => i.Key)
-                                       .OrderBy(i => i.RequiredDateFiscalYear)
-                                       .ThenBy(i => i.RequiredDateFiscalPeriod)
-                                       .ToList();
-                
-                minFuturePeriod = theFuturePeriods.First().RequiredDateFiscalPeriod;
-                maxFuturePeriod = theFuturePeriods.Last().RequiredDateFiscalPeriod;
-                countFuturePeriods = theFuturePeriods.Count();
+                       //SUM_PastDue_Quantity = group.Sum(k => k.CORemainRequiredQuantity),
+                       //SUM_PastDue_Amount = group.Sum(k => k.CORemainingRequiredAmount),
+                   }).ToList();
+                #endregion
 
-                for (int i = 0; i < countFuturePeriods; i++)
-                {
-                    if (!colForYearVolume.ContainsKey(theFuturePeriods.ElementAt(i).RequiredDateFiscalYear))
-                    {
-                        colForYearVolume.Add(theFuturePeriods.ElementAt(i).RequiredDateFiscalYear, new Dictionary<short, int>());
-                    }
-                    colForYearVolume[theFuturePeriods.ElementAt(i).RequiredDateFiscalYear].Add(theFuturePeriods.ElementAt(i).RequiredDateFiscalPeriod, colStart);
-                    colStart += 4;
-                }
+                #region Third Period
+                var thirdFiscalPeriod = dataset
+                   .Where(i => i.Period == "ThirdPeriod")
+                   .GroupBy(i => new
+                   {
+                       i.ItemKey
+                   }).Select(group => new Item
+                   {
+                       ItemKey = group.Key.ItemKey,
+                       SUM_TotalSalesQuantity = group.Sum(i => i.TotalSalesQuantity),
+                       SUM_MarginAmount = group.Sum(i => i.MarginAmount),
+                       SUM_NetShippedAmount = group.Sum(i => i.NetShippedAmount),
+                       SUM_NetShippedQuantity = group.Sum(i => i.NetShippedQuantity),
+                       SUM_TotalSalesAmount = group.Sum(i => i.TotalSalesAmount),
+
+                       //SUM_PastDue_Quantity = group.Sum(k => k.CORemainRequiredQuantity),
+                       //SUM_PastDue_Amount = group.Sum(k => k.CORemainingRequiredAmount),
+                   }).ToList();
                 #endregion
 
                 #endregion
@@ -154,23 +164,25 @@ namespace ReportsMain
                 InitWorkBook("GrossMarginFutureByFiscalPeriod");
                 CreateWorkSheet("Report");
                 #endregion
-                
+
                 #region HEADER
                 InsertTitle("Gross Margin Future By Fiscal Period");
                 NewLine();
 
-                InsertString("From: " + paramDateFrom + " to: " + paramDateTo, fontBold: true);
+                InsertString("From: " + paramDateFrom + " to: " + dThirdPeriodEndDate, fontBold: true);
 
                 //Current Period Header
-                CurrentCol(7);
-                InsertSubtitle(currentPeriodInfo.CurrentFiscalYear + " - Current Fiscal Period: " + currentPeriodInfo.CurrrentFiscalPeriod);
+                CurrentCol(colStartCurrentPeriod + 2);
+                InsertSubtitle("Current Fiscal Period: " + dCurrentPeriodEndDate.ToShortDateString());
 
-                //Future Period Headers
-                foreach (var item in theFuturePeriods)
-                {
-                    CurrentCol(colForYearVolume[item.RequiredDateFiscalYear][item.RequiredDateFiscalPeriod]);
-                    InsertSubtitle(item.RequiredDateFiscalYear + " - Period: " + item.RequiredDateFiscalPeriod);
-                }
+                //Second Period Header
+                CurrentCol(colStartSecondPeriod);
+                InsertSubtitle("Second Fiscal Period: " + dSecondPeriodEndDate.ToShortDateString());
+
+                //Third Period Header
+                CurrentCol(colStartThirdPeriod);
+                InsertSubtitle("Third Fiscal Period: " + dThirdPeriodEndDate.ToShortDateString());
+
                 NewLine();
 
                 InsertLabel("Item Key");
@@ -180,81 +192,89 @@ namespace ReportsMain
                 InsertLabel("Curr Inv", AlignMode: TextAlign.CENTER);
                 InsertLabel("Unit Price", AlignMode: TextAlign.CENTER);
 
-                InsertLabel("Total Sales Quantity", AlignMode: TextAlign.CENTER);
-                InsertLabel("Total Sales Amount", AlignMode: TextAlign.CENTER);
+                InsertLabel("Past Due Quantity", AlignMode: TextAlign.CENTER);
+                InsertLabel("Past Due Amount", AlignMode: TextAlign.CENTER); //added
 
                 InsertLabel("Current Sales Quantity", AlignMode: TextAlign.CENTER);
                 InsertLabel("Current Sales Amount", AlignMode: TextAlign.CENTER);
 
-                InsertLabel("Past Due Quantity", AlignMode: TextAlign.CENTER);
-                InsertLabel("Past Due Amount", AlignMode: TextAlign.CENTER); //added
-
                 InsertLabel("Net Shipped Quantity", AlignMode: TextAlign.CENTER);
                 InsertLabel("Net Shpped Amount", AlignMode: TextAlign.CENTER);
 
+                InsertLabel("Total Sales Quantity", AlignMode: TextAlign.CENTER);
+                InsertLabel("Total Sales Amount", AlignMode: TextAlign.CENTER);
+                
                 InsertLabel("Margin Amount", AlignMode: TextAlign.CENTER);
 
-                foreach (var item in theFuturePeriods)
-                {
-                    CurrentCol(colForYearVolume[item.RequiredDateFiscalYear][item.RequiredDateFiscalPeriod]);
-                    ws.Column(CurrentCol()).Width = 15;
-                    InsertLabel("CO Qty", AlignMode: TextAlign.CENTER);
-                    ws.Column(CurrentCol()).Width = 15;
-                    InsertLabel("CO Amount", AlignMode: TextAlign.CENTER);
-                    ws.Column(CurrentCol()).Width = 15;
-                    InsertLabel("Total Sales Amount", AlignMode: TextAlign.CENTER);
-                    ws.Column(CurrentCol()).Width = 15;
-                    InsertLabel("Margin", AlignMode: TextAlign.CENTER);
-                    ws.Column(CurrentCol()).Width = 15;
-                }
+                //Second Period
+                InsertLabel("CO Qty", AlignMode: TextAlign.CENTER);
+                InsertLabel("CO Amount", AlignMode: TextAlign.CENTER);
+                InsertLabel("Total Sales Amount", AlignMode: TextAlign.CENTER);
+                InsertLabel("Margin", AlignMode: TextAlign.CENTER);
+
+                //Third Period
+                InsertLabel("CO Qty", AlignMode: TextAlign.CENTER);
+                InsertLabel("CO Amount", AlignMode: TextAlign.CENTER);
+                InsertLabel("Total Sales Amount", AlignMode: TextAlign.CENTER);
+                InsertLabel("Margin", AlignMode: TextAlign.CENTER);
 
                 NewLine();
-                CurrentCol(6);
-                InsertLabel("Totals:", AlignMode: TextAlign.RIGHT);
-                //Total Sales Quantity
-                InsertFormula("=SUM(" + ws.Cells[CurrentRow() + 1, CurrentCol()].Address + ":" +
-                                      ws.Cells[join.Count() + 3, CurrentCol()].Address + ")", Type: NumberTypes.NUMBER);
-                //Total Sales Amount
-                InsertFormula("=SUM(" + ws.Cells[CurrentRow() + 1, CurrentCol()].Address + ":" +
-                                      ws.Cells[join.Count() + 3, CurrentCol()].Address + ")", Decimals: Precision.TWO, Type: NumberTypes.CURRENCY);
-
-                //Current Quantity
-                InsertFormula("=SUM(" + ws.Cells[CurrentRow() + 1, CurrentCol()].Address + ":" +
-                                      ws.Cells[join.Count() + 3, CurrentCol()].Address + ")", Type: NumberTypes.NUMBER);
-                //Current Amount
-                InsertFormula("=SUM(" + ws.Cells[CurrentRow() + 1, CurrentCol()].Address + ":" +
-                                      ws.Cells[join.Count() + 3, CurrentCol()].Address + ")", Type: NumberTypes.CURRENCY);
+                CurrentCol(7);
 
                 //Past Due Quantity
                 InsertFormula("=SUM(" + ws.Cells[CurrentRow() + 1, CurrentCol()].Address + ":" +
-                                      ws.Cells[join.Count() + 3, CurrentCol()].Address + ")", Type: NumberTypes.NUMBER);
+                                      ws.Cells[allGroupped.Count() + 4, CurrentCol()].Address + ")", Type: NumberTypes.NUMBER);
                 //Past Due Amount
                 InsertFormula("=SUM(" + ws.Cells[CurrentRow() + 1, CurrentCol()].Address + ":" +
-                                      ws.Cells[join.Count() + 3, CurrentCol()].Address + ")", Type: NumberTypes.CURRENCY);
+                                      ws.Cells[allGroupped.Count() + 4, CurrentCol()].Address + ")", Type: NumberTypes.CURRENCY);
+
+
+                //Current Sales Quantity
+                InsertFormula("=SUM(" + ws.Cells[CurrentRow() + 1, CurrentCol()].Address + ":" +
+                                      ws.Cells[allGroupped.Count() + 4, CurrentCol()].Address + ")", Type: NumberTypes.NUMBER);
+                //Current Sales Amount
+                InsertFormula("=SUM(" + ws.Cells[CurrentRow() + 1, CurrentCol()].Address + ":" +
+                                      ws.Cells[allGroupped.Count() + 4, CurrentCol()].Address + ")", Type: NumberTypes.CURRENCY);
+
 
                 //Net Shipped Quantity
                 InsertFormula("=SUM(" + ws.Cells[CurrentRow() + 1, CurrentCol()].Address + ":" +
-                                      ws.Cells[join.Count() + 3, CurrentCol()].Address + ")", Decimals: Precision.TWO, Type: NumberTypes.NUMBER);
+                                      ws.Cells[allGroupped.Count() + 4, CurrentCol()].Address + ")", Decimals: Precision.TWO, Type: NumberTypes.NUMBER);
                 //Net Shipped Amount
                 InsertFormula("=SUM(" + ws.Cells[CurrentRow() + 1, CurrentCol()].Address + ":" +
-                                      ws.Cells[join.Count() + 3, CurrentCol()].Address + ")", Decimals: Precision.TWO, Type: NumberTypes.CURRENCY);
+                                      ws.Cells[allGroupped.Count() + 4, CurrentCol()].Address + ")", Decimals: Precision.TWO, Type: NumberTypes.CURRENCY);
+
+                //Total Sales Quantity
+                InsertFormula("=SUM(" + ws.Cells[CurrentRow() + 1, CurrentCol()].Address + ":" +
+                                      ws.Cells[allGroupped.Count() + 4, CurrentCol()].Address + ")", Decimals: Precision.TWO, Type: NumberTypes.NUMBER);
+                //Total Sales Amount
+                InsertFormula("=SUM(" + ws.Cells[CurrentRow() + 1, CurrentCol()].Address + ":" +
+                                      ws.Cells[allGroupped.Count() + 4, CurrentCol()].Address + ")", Decimals: Precision.TWO, Type: NumberTypes.CURRENCY);
 
                 //Margin Amount
                 InsertFormula("=SUM(" + ws.Cells[CurrentRow() + 1, CurrentCol()].Address + ":" +
-                                      ws.Cells[join.Count() + 3, CurrentCol()].Address + ")", Decimals: Precision.TWO, Type: NumberTypes.CURRENCY);
+                                      ws.Cells[allGroupped.Count() + 4, CurrentCol()].Address + ")", Decimals: Precision.TWO, Type: NumberTypes.CURRENCY);
 
-                foreach (var item in theFuturePeriods)
-                {
-                    CurrentCol(colForYearVolume[item.RequiredDateFiscalYear][item.RequiredDateFiscalPeriod]);
-                    InsertFormula("=SUM(" + ws.Cells[CurrentRow() + 1, CurrentCol()].Address + ":" +
-                                      ws.Cells[join.Count() + 3, CurrentCol()].Address + ")", Type: NumberTypes.NUMBER);
-                    InsertFormula("=SUM(" + ws.Cells[CurrentRow() + 1, CurrentCol()].Address + ":" +
-                                          ws.Cells[join.Count() + 3, CurrentCol()].Address + ")", Decimals: Precision.TWO, Type: NumberTypes.CURRENCY);
-                    InsertFormula("=SUM(" + ws.Cells[CurrentRow() + 1, CurrentCol()].Address + ":" +
-                                          ws.Cells[join.Count() + 3, CurrentCol()].Address + ")", Decimals: Precision.TWO, Type: NumberTypes.CURRENCY);
-                    InsertFormula("=SUM(" + ws.Cells[CurrentRow() + 1, CurrentCol()].Address + ":" +
-                                          ws.Cells[join.Count() + 3, CurrentCol()].Address + ")", Decimals: Precision.TWO, Type: NumberTypes.CURRENCY);
-                }
+                //Second Period
+                InsertFormula("=SUM(" + ws.Cells[CurrentRow() + 1, CurrentCol()].Address + ":" +
+                                    ws.Cells[allGroupped.Count() + 4, CurrentCol()].Address + ")", Type: NumberTypes.NUMBER);
+                InsertFormula("=SUM(" + ws.Cells[CurrentRow() + 1, CurrentCol()].Address + ":" +
+                                        ws.Cells[allGroupped.Count() + 4, CurrentCol()].Address + ")", Decimals: Precision.TWO, Type: NumberTypes.CURRENCY);
+                InsertFormula("=SUM(" + ws.Cells[CurrentRow() + 1, CurrentCol()].Address + ":" +
+                                        ws.Cells[allGroupped.Count() + 4, CurrentCol()].Address + ")", Decimals: Precision.TWO, Type: NumberTypes.CURRENCY);
+                InsertFormula("=SUM(" + ws.Cells[CurrentRow() + 1, CurrentCol()].Address + ":" +
+                                        ws.Cells[allGroupped.Count() + 4, CurrentCol()].Address + ")", Decimals: Precision.TWO, Type: NumberTypes.CURRENCY);
+
+                //Third Period
+                InsertFormula("=SUM(" + ws.Cells[CurrentRow() + 1, CurrentCol()].Address + ":" +
+                                    ws.Cells[allGroupped.Count() + 4, CurrentCol()].Address + ")", Type: NumberTypes.NUMBER);
+                InsertFormula("=SUM(" + ws.Cells[CurrentRow() + 1, CurrentCol()].Address + ":" +
+                                        ws.Cells[allGroupped.Count() + 4, CurrentCol()].Address + ")", Decimals: Precision.TWO, Type: NumberTypes.CURRENCY);
+                InsertFormula("=SUM(" + ws.Cells[CurrentRow() + 1, CurrentCol()].Address + ":" +
+                                        ws.Cells[allGroupped.Count() + 4, CurrentCol()].Address + ")", Decimals: Precision.TWO, Type: NumberTypes.CURRENCY);
+                InsertFormula("=SUM(" + ws.Cells[CurrentRow() + 1, CurrentCol()].Address + ":" +
+                                        ws.Cells[allGroupped.Count() + 4, CurrentCol()].Address + ")", Decimals: Precision.TWO, Type: NumberTypes.CURRENCY);
+
 
                 NewLine();
                 freeze();
@@ -262,41 +282,60 @@ namespace ReportsMain
 
                 #region DETAIL
 
-
-                foreach (var item in join)
+                foreach (var item in allGroupped)
                 {
-                    InsertNumber((decimal)item.grouppedItem.Key.ItemKey);
-                    InsertString(item.grouppedItem.Key.ItemReference1);
-                    InsertString(item.grouppedItem.Key.ItemNumber);
-                    InsertString(item.grouppedItem.Key.ItemDescription);
-                    InsertNumber(item.grouppedItem.Key.Inventory);
-                    InsertCurrency(item.grouppedItem.Key.ItemControllingNetUnitPrice, Decimals: Precision.FOUR);
+                    InsertNumber((decimal)item.Key.ItemKey);
+                    InsertString(item.Key.ItemReference1);
+                    InsertString(item.Key.ItemNumber);
+                    InsertString(item.Key.ItemDescription);
+                    InsertNumber(item.Key.Inventory);
+                    InsertCurrency(item.Key.ItemControllingNetUnitPrice, Decimals: Precision.FOUR);
 
-                    if (item.currentP != null)
-                    {
-                        InsertNumber(item.currentP.SUM_TotalSalesQuantity);
-                        InsertCurrency(item.currentP.SUM_TotalSalesAmount, Decimals: Precision.TWO);
+                    CurrentCol(colStartCurrentPeriod);
+                    //Past Due
+                    var pastDueForItem = pastDue.Where(e => e.ItemKey == item.Key.ItemKey).FirstOrDefault();
+                    double pastDueForItemQty = pastDueForItem != null ? pastDueForItem.SUM_PastDue_Quantity : 0;
+                    double pastDueForItemAmount = pastDueForItem != null ? pastDueForItem.SUM_PastDue_Amount : 0;
+                    InsertNumber(pastDueForItemQty);
+                    InsertCurrency(pastDueForItemAmount);
 
-                        InsertNumber(item.currentP.SUM_TotalSalesQuantity - item.currentP.SUM_PastDue_Quantity);
-                        InsertCurrency(item.currentP.SUM_TotalSalesAmount - item.currentP.SUM_PastDue_Amount);
+                    //Current Period
+                    var currentFiscalPeriodForItem = currentFiscalPeriod.Where(e => e.ItemKey == item.Key.ItemKey).FirstOrDefault();
+                    double currentFiscalPeriodForItemQty = currentFiscalPeriodForItem != null ? currentFiscalPeriodForItem.SUM_TotalSalesQuantity : 0;
+                    double currentFiscalPeriodForItemAmount = currentFiscalPeriodForItem != null ? currentFiscalPeriodForItem.SUM_TotalSalesAmount : 0;
+                    InsertNumber(currentFiscalPeriodForItemQty);
+                    InsertCurrency(currentFiscalPeriodForItemAmount);
 
-                        InsertNumber(item.currentP.SUM_PastDue_Quantity);
-                        InsertCurrency(item.currentP.SUM_PastDue_Amount);
+                    //Current Shipmnets
+                    double currentFiscalShipmentsQty = currentFiscalPeriodForItem != null ? currentFiscalPeriodForItem.SUM_NetShippedQuantity : 0;
+                    double currentFiscalShipmentsAmount = currentFiscalPeriodForItem != null ? currentFiscalPeriodForItem.SUM_NetShippedAmount : 0;
+                    InsertNumber(currentFiscalShipmentsQty);
+                    InsertCurrency(currentFiscalShipmentsAmount);
 
-                        InsertNumber(item.currentP.SUM_NetShippedQuantity);                        
-                        InsertCurrency(item.currentP.SUM_NetShippedAmount, Decimals: Precision.TWO);
+                    //Current Total Sales
+                    InsertNumber(pastDueForItemQty + currentFiscalPeriodForItemQty + currentFiscalShipmentsQty);
+                    InsertCurrency(pastDueForItemAmount + currentFiscalPeriodForItemAmount + currentFiscalShipmentsAmount);
 
-                        InsertCurrency(item.currentP.SUM_MarginAmount, Decimals: Precision.TWO);
-                    }
-                    var futureList = futurePeriods.Where(f => f.ItemKey == item.grouppedItem.Key.ItemKey);
-                    foreach (var fut in futureList)
-                    {
-                        CurrentCol(colForYearVolume[fut.RequiredDateFiscalYear][fut.RequiredDateFiscalPeriod]);
-                        InsertNumber(fut.SUM_TotalSalesQuantity);
-                        InsertCurrency(fut.SUM_TotalSalesAmount, Decimals: Precision.TWO);
-                        InsertCurrency(fut.SUM_TotalSalesAmount, Decimals: Precision.TWO);
-                        InsertCurrency(fut.SUM_MarginAmount, Decimals: Precision.TWO);
-                    }
+                    //Current Margin
+                    InsertCurrency(currentFiscalPeriodForItem != null ? currentFiscalPeriodForItem.SUM_MarginAmount + (pastDueForItem != null ? pastDueForItem.SUM_MarginAmount : 0) : 0);
+
+                    //Second Period
+                    CurrentCol(colStartSecondPeriod);
+                    var secondFiscalPeriodForItem = secondFiscalPeriod.Where(e => e.ItemKey == item.Key.ItemKey).FirstOrDefault();
+
+                    InsertNumber(secondFiscalPeriodForItem != null ? secondFiscalPeriodForItem.SUM_TotalSalesQuantity : 0);
+                    InsertCurrency(secondFiscalPeriodForItem != null ? secondFiscalPeriodForItem.SUM_TotalSalesAmount : 0);
+                    InsertCurrency(secondFiscalPeriodForItem != null ? secondFiscalPeriodForItem.SUM_TotalSalesAmount : 0);
+                    InsertCurrency(secondFiscalPeriodForItem != null ? secondFiscalPeriodForItem.SUM_MarginAmount : 0);
+
+                    //Third Period
+                    CurrentCol(colStartThirdPeriod);
+                    var thirdFiscalPeriodForItem = thirdFiscalPeriod.Where(e => e.ItemKey == item.Key.ItemKey).FirstOrDefault();
+
+                    InsertNumber(thirdFiscalPeriodForItem != null ? thirdFiscalPeriodForItem.SUM_TotalSalesQuantity : 0);
+                    InsertCurrency(thirdFiscalPeriodForItem != null ? thirdFiscalPeriodForItem.SUM_TotalSalesAmount : 0);
+                    InsertCurrency(thirdFiscalPeriodForItem != null ? thirdFiscalPeriodForItem.SUM_TotalSalesAmount : 0);
+                    InsertCurrency(thirdFiscalPeriodForItem != null ? thirdFiscalPeriodForItem.SUM_MarginAmount : 0);
 
                     NewLine();
                 }
@@ -316,8 +355,16 @@ namespace ReportsMain
                 ws.Column(11).Width = 15;               //K
                 ws.Column(12).Width = 15;               //L
                 ws.Column(13).Width = 15;               //M
-                ws.Column(14).Width = 15;               //L
-                ws.Column(15).Width = 15;               //M
+                ws.Column(14).Width = 15;               //N
+                ws.Column(15).Width = 15;               //O
+                ws.Column(16).Width = 15;               //P
+                ws.Column(17).Width = 15;               //Q
+                ws.Column(18).Width = 15;               //R
+                ws.Column(19).Width = 15;               //S
+                ws.Column(20).Width = 15;               //T
+                ws.Column(21).Width = 15;               //U
+                ws.Column(22).Width = 15;               //B
+                ws.Column(23).Width = 15;               //W
 
                 deduceColPageBreak();
                 #endregion
@@ -334,34 +381,17 @@ namespace ReportsMain
             public double Inventory { get; set; }
             public double ItemControllingNetUnitPrice { get; set; }
 
-            public short CurrrentFiscalPeriod { get; set; }
-            public short CurrentFiscalYear { get; set; }
-            
-            public DateTime RequiredDatePeriodEndDate { get; set; }
-            public DateTime CurrentPeriodEndDate { get; set; }
             public DateTime RequiredDate { get; set; }
 
             public double TotalSalesQuantity { get; set; }
-           
+
             public double TotalSalesAmount { get; set; }
             public double MarginAmount { get; set; }
             //public string FutureOrCurrent { get; set; }
             public double NetShippedQuantity { get; set; }
             public double NetShippedAmount { get; set; }
 
-            public string FutureOrCurrent { get; set; }
-
-            //public decimal? PDQuantity
-            //{
-            //    get
-            //    {
-            //        if (FutureOrCurrent == "PastDue")
-            //        {
-            //            return CORemainRequiredQuantity;
-            //        }
-            //        return 0;
-            //    }
-            //}
+            public string Period { get; set; }
 
             public short RequiredDateFiscalYear { get; set; }
             public short RequiredDateFiscalPeriod { get; set; }
@@ -373,7 +403,6 @@ namespace ReportsMain
             public double SUM_NetShippedAmount { get; set; }
             public double SUM_MarginAmount { get; set; }
 
-
             #region For Current Period Only
             public double CORemainRequiredQuantity { get; set; }
             public double CORemainingRequiredAmount { get; set; }
@@ -384,6 +413,12 @@ namespace ReportsMain
             //public double SUM_CurrentPeriod_Amount { get; set; }
             #endregion
 
+        }
+
+        private class CurrentFiscalPeriod
+        {
+            public DateTime PeriodEndDate { get; set; }
+            public short FiscalPeriod { get; set; }
         }
 
     }

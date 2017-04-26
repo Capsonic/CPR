@@ -1,25 +1,35 @@
-﻿SELECT PastDueAndCurrentCOs.ItemNumber
+﻿--declare @startDate as datetime = '2017-04-03'
+--declare @currentPeriodEndDate as datetime = '2017-04-29'
+--declare @secondPeriodEndDate as datetime = '2017-06-03'
+--declare @thirdPeriodEndDate as datetime = '2017-07-01'
+
+SELECT PastDueAndCurrentCOs.ItemNumber
 	,PastDueAndCurrentCOs.ItemKey
 	,PastDueAndCurrentCOs.ItemDescription
 	,PastDueAndCurrentCOs.MakeBuyCode
 	,PastDueAndCurrentCOs.ItemReference1
 	,PastDueAndCurrentCOs.TotalRolledCost
-	,PastDueAndCurrentCOs.CurrentFiscalYear
-	,PastDueAndCurrentCOs.CurrrentFiscalPeriod
-	,PastDueAndCurrentCOs.CurrentPeriodEndDate
+	--,PastDueAndCurrentCOs.CurrentFiscalYear
+	--,PastDueAndCurrentCOs.CurrrentFiscalPeriod
+	--,PastDueAndCurrentCOs.CurrentPeriodEndDate
 	,PastDueAndCurrentCOs.RequiredDate
-	,PastDueAndCurrentCOs.RequiredDateFiscalYear
-	,PastDueAndCurrentCOs.RequiredDateFiscalPeriod
-	,PastDueAndCurrentCOs.RequiredDatePeriodEndDate
-	,CASE 
-		WHEN PastDueAndCurrentCOs.CurrentPeriodEndDate < RequiredDatePeriodEndDate
-			THEN 'Future'
-		ELSE CASE 
-				WHEN PastDueAndCurrentCOs.CurrentPeriodEndDate = RequiredDatePeriodEndDate
-					THEN 'Current'
-				ELSE 'PastDue'
-				END
-		END AS FutureOrCurrent
+	--,PastDueAndCurrentCOs.RequiredDateFiscalYear
+	--,PastDueAndCurrentCOs.RequiredDateFiscalPeriod
+	--,PastDueAndCurrentCOs.RequiredDatePeriodEndDate
+	,CASE WHEN ViewSource = 'OpenOrders' and PastDueAndCurrentCOs.RequiredDate < getdate() THEN 'PastDue'
+	WHEN PastDueAndCurrentCOs.RequiredDate between @startDate and @currentPeriodEndDate THEN 'Current'
+	WHEN PastDueAndCurrentCOs.RequiredDate between @currentPeriodEndDate and @secondPeriodEndDate THEN 'SecondPeriod'
+	WHEN PastDueAndCurrentCOs.RequiredDate between @secondPeriodEndDate and @thirdPeriodEndDate THEN 'ThirdPeriod'
+	END AS 'Period'
+	--,CASE 
+	--	WHEN @currentPeriodEndDate < RequiredDatePeriodEndDate
+	--		THEN 'Future'
+	--	ELSE CASE 
+	--			WHEN @currentPeriodEndDate = RequiredDatePeriodEndDate
+	--				THEN 'Current'
+	--			ELSE 'PastDue'
+	--			END
+	--	END AS FutureOrCurrent
 	,PastDueAndCurrentCOs.ViewSource
 	,PastDueAndCurrentCOs.HistoryTransactionType
 	,PastDueAndCurrentCOs.DemandSupplyType
@@ -102,49 +112,49 @@ FROM (
 		,_NoLock_FS_Customer.CustomerID
 		,_NoLock_FS_Customer.CustomerName
 		,_NoLock_FS_Item.InventoryAccount
-		,(
-			SELECT TOP (1) CAST(CONVERT(VARCHAR, YEAR(GETDATE())) + '-' + CONVERT(VARCHAR, MONTH(PeriodEndDate)) + '-' + CONVERT(VARCHAR, DAY(PeriodEndDate)) AS DATETIME) AS NewPeriodEndDate
-			FROM _NoLock_FS_FiscalPeriod
-			WHERE (YEAR(GETDATE()) = CONVERT(INT, FiscalYear))
-				AND (GETDATE() <= CAST(CONVERT(VARCHAR, YEAR(GETDATE())) + '-' + CONVERT(VARCHAR, MONTH(PeriodEndDate)) + '-' + CONVERT(VARCHAR, DAY(PeriodEndDate)) AS DATETIME))
-			ORDER BY FiscalPeriod
-			) AS CurrentPeriodEndDate
-		,(
-			SELECT TOP (1) FiscalYear
-			FROM _NoLock_FS_FiscalPeriod AS _NoLock_FS_FiscalPeriod_5
-			WHERE (YEAR(GETDATE()) = CONVERT(INT, FiscalYear))
-				AND (GETDATE() <= CAST(CONVERT(VARCHAR, YEAR(GETDATE())) + '-' + CONVERT(VARCHAR, MONTH(PeriodEndDate)) + '-' + CONVERT(VARCHAR, DAY(PeriodEndDate)) AS DATETIME))
-			ORDER BY FiscalPeriod
-			) AS CurrentFiscalYear
-		,(
-			SELECT TOP (1) FiscalPeriod
-			FROM _NoLock_FS_FiscalPeriod AS _NoLock_FS_FiscalPeriod_4
-			WHERE (YEAR(GETDATE()) = CONVERT(INT, FiscalYear))
-				AND (GETDATE() <= CAST(CONVERT(VARCHAR, YEAR(GETDATE())) + '-' + CONVERT(VARCHAR, MONTH(PeriodEndDate)) + '-' + CONVERT(VARCHAR, DAY(PeriodEndDate)) AS DATETIME))
-			ORDER BY FiscalPeriod
-			) AS CurrrentFiscalPeriod
+		--,(
+		--	SELECT TOP (1) CAST(CONVERT(VARCHAR, YEAR(GETDATE())) + '-' + CONVERT(VARCHAR, MONTH(PeriodEndDate)) + '-' + CONVERT(VARCHAR, DAY(PeriodEndDate)) AS DATETIME) AS NewPeriodEndDate
+		--	FROM _NoLock_FS_FiscalPeriod
+		--	WHERE (YEAR(GETDATE()) = CONVERT(INT, FiscalYear))
+		--		AND (GETDATE() <= CAST(CONVERT(VARCHAR, YEAR(GETDATE())) + '-' + CONVERT(VARCHAR, MONTH(PeriodEndDate)) + '-' + CONVERT(VARCHAR, DAY(PeriodEndDate)) AS DATETIME))
+		--	ORDER BY FiscalPeriod
+		--	) AS CurrentPeriodEndDate
+		--,(
+		--	SELECT TOP (1) FiscalYear
+		--	FROM _NoLock_FS_FiscalPeriod AS _NoLock_FS_FiscalPeriod_5
+		--	WHERE (YEAR(GETDATE()) = CONVERT(INT, FiscalYear))
+		--		AND (GETDATE() <= CAST(CONVERT(VARCHAR, YEAR(GETDATE())) + '-' + CONVERT(VARCHAR, MONTH(PeriodEndDate)) + '-' + CONVERT(VARCHAR, DAY(PeriodEndDate)) AS DATETIME))
+		--	ORDER BY FiscalPeriod
+		--	) AS CurrentFiscalYear
+		--,(
+		--	SELECT TOP (1) FiscalPeriod
+		--	FROM _NoLock_FS_FiscalPeriod AS _NoLock_FS_FiscalPeriod_4
+		--	WHERE (YEAR(GETDATE()) = CONVERT(INT, FiscalYear))
+		--		AND (GETDATE() <= CAST(CONVERT(VARCHAR, YEAR(GETDATE())) + '-' + CONVERT(VARCHAR, MONTH(PeriodEndDate)) + '-' + CONVERT(VARCHAR, DAY(PeriodEndDate)) AS DATETIME))
+		--	ORDER BY FiscalPeriod
+		--	) AS CurrrentFiscalPeriod
 		,DemandSupply.RequiredDate
-		,ISNULL((
-				SELECT TOP (1) CAST(CONVERT(VARCHAR, YEAR(DemandSupply.RequiredDate)) + '-' + CONVERT(VARCHAR, MONTH(PeriodEndDate)) + '-' + CONVERT(VARCHAR, DAY(PeriodEndDate)) AS DATETIME) AS NewPeriodEndDate
-				FROM _NoLock_FS_FiscalPeriod AS _NoLock_FS_FiscalPeriod_3
-				WHERE (YEAR(DemandSupply.RequiredDate) = CONVERT(INT, FiscalYear))
-					AND (DemandSupply.RequiredDate <= CAST(CONVERT(VARCHAR, YEAR(DemandSupply.RequiredDate)) + '-' + CONVERT(VARCHAR, MONTH(PeriodEndDate)) + '-' + CONVERT(VARCHAR, DAY(PeriodEndDate)) AS DATETIME))
-				ORDER BY FiscalPeriod
-				), '01/01/2079') AS RequiredDatePeriodEndDate
-		,ISNULL((
-				SELECT TOP (1) FiscalYear
-				FROM _NoLock_FS_FiscalPeriod AS _NoLock_FS_FiscalPeriod_2
-				WHERE (YEAR(DemandSupply.RequiredDate) = CONVERT(INT, FiscalYear))
-					AND (DemandSupply.RequiredDate <= CAST(CONVERT(VARCHAR, YEAR(DemandSupply.RequiredDate)) + '-' + CONVERT(VARCHAR, MONTH(PeriodEndDate)) + '-' + CONVERT(VARCHAR, DAY(PeriodEndDate)) AS DATETIME))
-				ORDER BY FiscalPeriod
-				), '2079') AS RequiredDateFiscalYear
-		,ISNULL((
-				SELECT TOP (1) FiscalPeriod
-				FROM _NoLock_FS_FiscalPeriod AS _NoLock_FS_FiscalPeriod_1
-				WHERE (YEAR(DemandSupply.RequiredDate) = CONVERT(INT, FiscalYear))
-					AND (DemandSupply.RequiredDate <= CAST(CONVERT(VARCHAR, YEAR(DemandSupply.RequiredDate)) + '-' + CONVERT(VARCHAR, MONTH(PeriodEndDate)) + '-' + CONVERT(VARCHAR, DAY(PeriodEndDate)) AS DATETIME))
-				ORDER BY FiscalPeriod
-				), '12') AS RequiredDateFiscalPeriod
+		--,ISNULL((
+		--		SELECT TOP (1) CAST(CONVERT(VARCHAR, YEAR(DemandSupply.RequiredDate)) + '-' + CONVERT(VARCHAR, MONTH(PeriodEndDate)) + '-' + CONVERT(VARCHAR, DAY(PeriodEndDate)) AS DATETIME) AS NewPeriodEndDate
+		--		FROM _NoLock_FS_FiscalPeriod AS _NoLock_FS_FiscalPeriod_3
+		--		WHERE (YEAR(DemandSupply.RequiredDate) = CONVERT(INT, FiscalYear))
+		--			AND (DemandSupply.RequiredDate <= CAST(CONVERT(VARCHAR, YEAR(DemandSupply.RequiredDate)) + '-' + CONVERT(VARCHAR, MONTH(PeriodEndDate)) + '-' + CONVERT(VARCHAR, DAY(PeriodEndDate)) AS DATETIME))
+		--		ORDER BY FiscalPeriod
+		--		), '01/01/2079') AS RequiredDatePeriodEndDate
+		--,ISNULL((
+		--		SELECT TOP (1) FiscalYear
+		--		FROM _NoLock_FS_FiscalPeriod AS _NoLock_FS_FiscalPeriod_2
+		--		WHERE (YEAR(DemandSupply.RequiredDate) = CONVERT(INT, FiscalYear))
+		--			AND (DemandSupply.RequiredDate <= CAST(CONVERT(VARCHAR, YEAR(DemandSupply.RequiredDate)) + '-' + CONVERT(VARCHAR, MONTH(PeriodEndDate)) + '-' + CONVERT(VARCHAR, DAY(PeriodEndDate)) AS DATETIME))
+		--		ORDER BY FiscalPeriod
+		--		), '2079') AS RequiredDateFiscalYear
+		--,ISNULL((
+		--		SELECT TOP (1) FiscalPeriod
+		--		FROM _NoLock_FS_FiscalPeriod AS _NoLock_FS_FiscalPeriod_1
+		--		WHERE (YEAR(DemandSupply.RequiredDate) = CONVERT(INT, FiscalYear))
+		--			AND (DemandSupply.RequiredDate <= CAST(CONVERT(VARCHAR, YEAR(DemandSupply.RequiredDate)) + '-' + CONVERT(VARCHAR, MONTH(PeriodEndDate)) + '-' + CONVERT(VARCHAR, DAY(PeriodEndDate)) AS DATETIME))
+		--		ORDER BY FiscalPeriod
+		--		), '12') AS RequiredDateFiscalPeriod
 		,DemandSupply.ViewSource
 		,DemandSupply.HistoryTransactionType
 		,DemandSupply.DemandSupplyType
@@ -270,7 +280,7 @@ FROM (
 				)
 			AND (_NoLock_FS_DemandSupply_1.ComponentLineType = 'N')
 			AND (_NoLock_FS_DemandSupply_1.ComponentLineType <> 'B')
-			AND (_NoLock_FS_DemandSupply_1.RequiredDate <= @EndDate)
+			AND (_NoLock_FS_DemandSupply_1.RequiredDate <= @thirdPeriodEndDate)
 			AND (_NoLock_FS_DemandSupply_1.LineStatus < '5')
 			AND (ISNULL(_NoLock_FS_DemandSupply_1.RequiredQuantity, 0) - ISNULL(_NoLock_FS_DemandSupply_1.ReceiptIssuedQuantity, 0) > '0')
 		
@@ -279,7 +289,7 @@ FROM (
 		--END OPEN ORDERS		
 		
 		--START SHIPMENTS
-			SELECT TOP (100) PERCENT _NoLock_FS_ItemHistoryLink.ItemKey
+			SELECT _NoLock_FS_ItemHistoryLink.ItemKey
 				,'Shipments' AS ViewSource
 				,'D' AS DemandSupplyType
 				,_NoLock_FS_HistoryShipment.OrderType
@@ -312,7 +322,7 @@ FROM (
 			INNER JOIN _NoLock_FS_HistoryShipment ON _NoLock_FS_ItemHistoryLink.ItemHistoryKey = _NoLock_FS_HistoryShipment.HistoryShipmentKey
 			WHERE (
 					_NoLock_FS_HistoryShipment.TransactionDate BETWEEN @StartDate
-						AND @EndDate
+						AND @thirdPeriodEndDate
 					)
 			GROUP BY _NoLock_FS_ItemHistoryLink.ItemKey
 				,_NoLock_FS_HistoryShipment.OrderType
@@ -328,6 +338,8 @@ FROM (
 				,_NoLock_FS_HistoryShipment.HistoryShipmentKey
 				,_NoLock_FS_HistoryShipment.TransactionDate
 			--END SHIPMENTS
+
+
 		) AS DemandSupply ON _NoLock_FS_Item.ItemKey = DemandSupply.ItemKey
 	LEFT OUTER JOIN _NoLock_FS_Customer
 	INNER JOIN _NoLock_FS_COHeader AS _NoLock_FS_COHeader_1 ON _NoLock_FS_Customer.CustomerKey = _NoLock_FS_COHeader_1.CustomerKey ON DemandSupply.COHeaderKey = _NoLock_FS_COHeader_1.COHeaderKey WHERE (_NoLock_FS_ItemCost.CostType IN (0))
@@ -347,4 +359,4 @@ LEFT OUTER JOIN _CAP_MarketSegment ON PastDueAndCurrentCOs.ItemClass4 = _CAP_Mar
 LEFT OUTER JOIN _CAP_Business ON PastDueAndCurrentCOs.ItemClass6 = _CAP_Business.BusinessCode
 LEFT OUTER JOIN _CAP_Class_Ref ON PastDueAndCurrentCOs.ItemReference1 = _CAP_Class_Ref.ITEM_REF1
 
---where ItemKey = 50386
+--where ItemKey = 50350

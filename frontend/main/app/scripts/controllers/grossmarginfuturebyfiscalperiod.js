@@ -26,6 +26,7 @@ angular.module('appApp').controller('GrossmarginfuturebyfiscalperiodCtrl', funct
 
     $scope.clearFilters = function() {
         $scope.filter_dateFrom = null;
-        $scope.filter_dateTo = null;
+        // $scope.filter_dateTo = null;
     };
+    
 });

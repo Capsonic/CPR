@@ -307,7 +307,7 @@
 			"file": "app/index.html",
 			"settings":
 			{
-				"buffer_size": 6476,
+				"buffer_size": 6577,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -316,27 +316,69 @@
 			"file": "app/scripts/controllers/main.js",
 			"settings":
 			{
-				"buffer_size": 1850,
+				"buffer_size": 1913,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "app/views/grossmarginfuturebyfiscalperiod.html",
-			"settings":
-			{
-				"buffer_size": 1117,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
 			}
 		},
 		{
 			"file": "app/scripts/controllers/grossmarginfuturebyfiscalperiod.js",
 			"settings":
 			{
-				"buffer_size": 863,
+				"buffer_size": 929,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/views/grossmarginfuturebyfiscalperiod.html",
+			"settings":
+			{
+				"buffer_size": 1626,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/scripts/controllers/reports.js",
+			"settings":
+			{
+				"buffer_size": 217,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "app/scripts/services/appconfig.js",
+			"settings":
+			{
+				"buffer_size": 328,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "app/views/reports.html",
+			"settings":
+			{
+				"buffer_size": 219,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "Searching 54 files for \"apps.capsonic\"\n\nC:\\gitRepositories\\CURRENT\\CapsonicProgrammedReports\\frontend\\main\\app\\web.config:\n    2  <configuration>\n    3      <system.web>\t\t\n    4:         <customErrors defaultRedirect=\"http://apps.capsonic.com/CPR/401.html\" mode=\"RemoteOnly\">\n    5:             <error redirect=\"http://apps.capsonic.com/CPR/401.html\" statusCode=\"401\" />\n    6          </customErrors>\n    7      </system.web>\n\nC:\\gitRepositories\\CURRENT\\CapsonicProgrammedReports\\frontend\\main\\app\\scripts\\services\\appconfig.js:\n    9   */\n   10  angular.module('appApp').constant('appConfig', {\n   11:     // API_URL: 'https://apps.capsonic.com/CPR_Backend/api/',\n   12      API_URL: 'http://localhost:58155/api/',\n   13      APP_NAME: 'Capsonic Programmed Reports'\n\n3 matches across 2 files\n",
+			"settings":
+			{
+				"buffer_size": 794,
+				"line_ending": "Windows",
+				"name": "Find Results",
+				"scratch": true
+			}
+		},
+		{
+			"file": "app/web.config",
+			"settings":
+			{
+				"buffer_size": 318,
+				"line_ending": "Windows"
 			}
 		}
 	],
@@ -347,10 +389,14 @@
 	"build_varint": "",
 	"command_palette":
 	{
-		"height": 392.0,
-		"last_filter": "setxml",
+		"height": 334.0,
+		"last_filter": "form",
 		"selected_items":
 		[
+			[
+				"form",
+				"Snippet: bs3-form-horizontal"
+			],
 			[
 				"setxml",
 				"Set Syntax: XML"
@@ -532,10 +578,6 @@
 				"Snippet: bs3-row"
 			],
 			[
-				"form",
-				"Snippet: bs3-form"
-			],
-			[
 				"form\t",
 				"Snippet: bs3-form-inline"
 			],
@@ -651,19 +693,22 @@
 	[
 		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/frontend/main/app",
 		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/frontend/main/app/images",
+		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/frontend/main/app/styles",
 		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/frontend/main/app/views",
 		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/frontend/reusable",
 		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/frontend/reusable/images"
 	],
 	"file_history":
 	[
+		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/frontend/main/app/scripts/services/appconfig.js",
+		"//rsserver/wwwroot2/CPR/scripts/scripts.1abf8683.js",
+		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/frontend/main/Gruntfile.js",
+		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/frontend/main/app/scripts/controllers/grossmarginfuturebyfiscalperiod.js",
 		"//rsserver/wwwroot2/CPR/index.html",
 		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/frontend/main/app/views/reports.html",
 		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/frontend/main/app/scripts/controllers/reports.js",
-		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/frontend/main/app/scripts/services/appconfig.js",
 		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/frontend/main/app/views/grossmarginfuturebyfiscalperiod.html",
 		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/frontend/main/app/scripts/app.js",
-		"/C/gitRepositories/CURRENT/CapsonicProgrammedReports/frontend/main/app/scripts/controllers/grossmarginfuturebyfiscalperiod.js",
 		"//rsserver/wwwroot2/CPR_Backend/Web.config",
 		"//rsserver/wwwroot2/CPR/scripts/scripts.95fc86de.js",
 		"//rsserver/wwwroot2/CPR/scripts/vendor.93e07796.js",
@@ -782,13 +827,11 @@
 		"/C/gitRepositories/CURRENT/CMD/frontend/Main/bower_components/opentip/lib/adapter-component.js",
 		"/C/gitRepositories/CURRENT/CMD/frontend/Main/app/views/department-dashboards.html",
 		"/C/gitRepositories/CURRENT/CMD/frontend/Main/app/views/department-metrics.html",
-		"/C/gitRepositories/CURRENT/CMD/frontend/Main/app/scripts/controllers/department-metrics.js",
-		"/C/gitRepositories/CURRENT/CMD/frontend/Main/app/styles/main.scss",
-		"/C/gitRepositories/CURRENT/IQS/gitlog.txt"
+		"/C/gitRepositories/CURRENT/CMD/frontend/Main/app/scripts/controllers/department-metrics.js"
 	],
 	"find":
 	{
-		"height": 34.0
+		"height": 35.0
 	},
 	"find_in_files":
 	{
@@ -806,6 +849,18 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"pre",
+			"\"Start Date\"",
+			"Second Period",
+			"Current Period",
+			"summary",
+			"section",
+			"dialog",
+			"details",
+			"article",
+			"pre",
+			"css",
+			"apps.capsonic",
 			"data",
 			"h2",
 			"catWorkOrderService",
@@ -921,19 +976,7 @@
 			"p ",
 			"workstation",
 			"loadSelected",
-			"theModel",
-			"workstation",
-			"style",
-			"asdf",
-			"style=\"margin:1px;\"",
-			"td",
-			"h1",
-			"completeEntity",
-			"data",
-			"_loadEntity",
-			"addtopare",
-			"$timeout",
-			"workstationConfig"
+			"theModel"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -956,7 +999,7 @@
 	"groups":
 	[
 		{
-			"selected": 3,
+			"selected": 5,
 			"sheets":
 			[
 				{
@@ -965,15 +1008,105 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 6476,
+						"buffer_size": 6577,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1070,
-								1070
+								1364,
+								1364
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "app/scripts/controllers/main.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1913,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								610,
+								610
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "app/scripts/controllers/grossmarginfuturebyfiscalperiod.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 929,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								389,
+								389
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "app/views/grossmarginfuturebyfiscalperiod.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1626,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								385,
+								385
 							]
 						],
 						"settings":
@@ -990,57 +1123,25 @@
 					"type": "text"
 				},
 				{
-					"buffer": 1,
-					"file": "app/scripts/controllers/main.js",
+					"buffer": 4,
+					"file": "app/scripts/controllers/reports.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1850,
+						"buffer_size": 217,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								232,
-								250
+								217,
+								217
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "app/views/grossmarginfuturebyfiscalperiod.html",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1117,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								957,
-								957
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/HTML/HTML.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -1050,27 +1151,25 @@
 					"type": "text"
 				},
 				{
-					"buffer": 3,
-					"file": "app/scripts/controllers/grossmarginfuturebyfiscalperiod.js",
+					"buffer": 5,
+					"file": "app/scripts/services/appconfig.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 863,
+						"buffer_size": 328,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								736,
-								736
+								328,
+								328
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -1078,13 +1177,123 @@
 					},
 					"stack_index": 0,
 					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "app/views/reports.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 219,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								219,
+								219
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 794,
+						"regions":
+						{
+							"match":
+							{
+								"flags": 112,
+								"regions":
+								[
+									[
+										225,
+										238
+									],
+									[
+										319,
+										332
+									],
+									[
+										629,
+										642
+									]
+								],
+								"scope": ""
+							}
+						},
+						"selection":
+						[
+							[
+								213,
+								213
+							]
+						],
+						"settings":
+						{
+							"detect_indentation": false,
+							"line_numbers": false,
+							"output_tag": 1,
+							"result_base_dir": "",
+							"result_file_regex": "^([^ \t].*):$",
+							"result_line_regex": "^ +([0-9]+):",
+							"scroll_past_end": true,
+							"syntax": "Packages/Default/Find Results.hidden-tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "app/web.config",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 318,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								318,
+								318
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/XML/XML.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
 				}
 			]
 		}
 	],
 	"incremental_find":
 	{
-		"height": 26.0
+		"height": 27.0
 	},
 	"input":
 	{
@@ -1129,7 +1338,7 @@
 	"project": "CapsonicProgrammedReports.sublime-project",
 	"replace":
 	{
-		"height": 48.0
+		"height": 50.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -1139,8 +1348,56 @@
 		"selected_items":
 		[
 			[
+				"appconf",
+				"app\\scripts\\services\\appconfig.js"
+			],
+			[
+				"",
+				"Find Results"
+			],
+			[
 				"ind",
 				"app\\index.html"
+			],
+			[
+				"grosjs",
+				"app\\scripts\\controllers\\grossmarginfuturebyfiscalperiod.js"
+			],
+			[
+				"grossm",
+				"app\\views\\grossmarginfuturebyfiscalperiod.html"
+			],
+			[
+				"gojs",
+				"app\\scripts\\controllers\\grossmarginfuturebyfiscalperiod.js"
+			],
+			[
+				"mainjs",
+				"app\\scripts\\controllers\\main.js"
+			],
+			[
+				"appcon",
+				"app\\scripts\\services\\appconfig.js"
+			],
+			[
+				"gros",
+				"app\\scripts\\controllers\\grossmarginfuturebyfiscalperiod.js"
+			],
+			[
+				"repohtm",
+				"app\\views\\reports.html"
+			],
+			[
+				"repojs",
+				"app\\scripts\\controllers\\reports.js"
+			],
+			[
+				"repo",
+				"app\\views\\reports.html"
+			],
+			[
+				"appjs",
+				"app\\scripts\\app.js"
 			],
 			[
 				"grosm",
@@ -1155,52 +1412,20 @@
 				"app\\index.html"
 			],
 			[
-				"repohtm",
-				"app\\views\\reports.html"
-			],
-			[
-				"mainjs",
-				"app\\scripts\\controllers\\main.js"
-			],
-			[
-				"appcon",
-				"app\\scripts\\services\\appconfig.js"
-			],
-			[
 				"repoht",
 				"app\\views\\reports.html"
-			],
-			[
-				"repojs",
-				"app\\scripts\\controllers\\reports.js"
-			],
-			[
-				"appconf",
-				"app\\scripts\\services\\appconfig.js"
 			],
 			[
 				"indh",
 				"app\\index.html"
 			],
 			[
-				"repo",
-				"app\\views\\reports.html"
-			],
-			[
 				"reporth",
 				"app\\views\\reports.html"
 			],
 			[
-				"appjs",
-				"app\\scripts\\app.js"
-			],
-			[
 				"main",
 				"app\\styles\\main.scss"
-			],
-			[
-				"grosjs",
-				"app\\scripts\\controllers\\grossmarginfuturebyfiscalperiod.js"
 			],
 			[
 				"gross",
@@ -1633,22 +1858,6 @@
 			[
 				"deptmetrihtm",
 				"app\\views\\department-metrics.html"
-			],
-			[
-				"deptmehhm",
-				"app\\views\\department-dashboards.html"
-			],
-			[
-				"depmeth",
-				"app\\views\\department-metrics.html"
-			],
-			[
-				"relajs",
-				"app\\scripts\\controllers\\relationator.js"
-			],
-			[
-				"relationjs",
-				"app\\scripts\\controllers\\relationator.js"
 			]
 		],
 		"width": 0.0
@@ -1656,9 +1865,13 @@
 	"select_project":
 	{
 		"height": 500.0,
-		"last_filter": "scanadmin",
+		"last_filter": "caprepo",
 		"selected_items":
 		[
+			[
+				"caprepo",
+				"C:\\gitRepositories\\CURRENT\\CapsonicReports\\CapsonicReports.sublime-project"
+			],
 			[
 				"scanadmin",
 				"C:\\Users\\apacheco\\Documents\\SublimeProjects\\scanPackAdmin.sublime-project"

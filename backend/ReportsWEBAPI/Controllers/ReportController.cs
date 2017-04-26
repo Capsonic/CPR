@@ -57,13 +57,8 @@ namespace Reports_WEB_API.Controllers
                 if (isValidJSValue(paramDateFrom))
                 {
                     report.paramDateFrom = new DateTime(1970, 1, 1).AddTicks(long.Parse(paramDateFrom) * 10000);
+                    report.paramDateFrom = report.paramDateFrom.AddHours(-6); //Standarized to 12:00 AM
                 }
-
-                string paramDateTo = HttpContext.Current.Request["date_to"];
-                if (isValidJSValue(paramDateTo))
-                {
-                    report.paramDateTo = new DateTime(1970, 1, 1).AddTicks(long.Parse(paramDateTo) * 10000);
-                }                
 
                 result = Request.CreateResponse(HttpStatusCode.OK);
                 result.Content = new StreamContent(new MemoryStream(report.generate()));
