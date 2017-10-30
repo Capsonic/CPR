@@ -313,8 +313,8 @@ namespace ReportsMain
                     InsertCurrency(currentFiscalShipmentsAmount);
 
                     //Current Total Sales
-                    InsertNumber(pastDueForItemQty + currentFiscalPeriodForItemQty + currentFiscalShipmentsQty);
-                    InsertCurrency(pastDueForItemAmount + currentFiscalPeriodForItemAmount + currentFiscalShipmentsAmount);
+                    InsertNumber(pastDueForItemQty + currentFiscalPeriodForItemQty);
+                    InsertCurrency(pastDueForItemAmount + currentFiscalPeriodForItemAmount);
 
                     //Current Margin
                     InsertCurrency(currentFiscalPeriodForItem != null ? currentFiscalPeriodForItem.SUM_MarginAmount + (pastDueForItem != null ? pastDueForItem.SUM_MarginAmount : 0) : 0);
