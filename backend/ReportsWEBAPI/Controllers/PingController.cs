@@ -19,7 +19,7 @@ namespace ReportsWEBAPI.Controllers
             return "OK";
         }
 
-        [HttpGet Route("api/Ping/auth")]
+        [HttpGet, Route("api/Ping/auth")]
         public object auth()
         {
             WindowsIdentity user = (WindowsIdentity)User.Identity;
