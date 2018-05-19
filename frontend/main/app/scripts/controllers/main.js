@@ -9,18 +9,18 @@
  */
 angular.module('appApp').controller('MainCtrl', function($scope, localStorageService, $rootScope, appConfig, $http) {
 
-    $http({
-        method: 'GET',
-        url: appConfig.API_URL + 'Ping/auth',
-        withCredentials: true,
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        }
-    }).then(function(reponse) {
-        $rootScope.currentUser = reponse.data;
-    }, function() {
-        alertify.alert('Incorrect Login');
-    });
+    // $http({
+    //     method: 'GET',
+    //     url: appConfig.API_URL + 'Ping/auth',
+    //     withCredentials: true,
+    //     headers: {
+    //         'Content-Type': 'application/x-www-form-urlencoded'
+    //     }
+    // }).then(function(reponse) {
+    //     $rootScope.currentUser = reponse.data;
+    // }, function() {
+    //     alertify.alert('Incorrect Login');
+    // });
 
     $scope.bootstraps = [
         { name: 'Default', url: 'theme-default' },

@@ -12,7 +12,7 @@ using System.Web.Http.Cors;
 
 namespace Reports_WEB_API.Controllers
 {
-    [Authorize]
+    [AllowAnonymous]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ReportController : ApiController
     {

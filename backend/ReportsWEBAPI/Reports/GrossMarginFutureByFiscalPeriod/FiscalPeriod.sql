@@ -2,5 +2,5 @@
 
 SELECT TOP (3) PeriodEndDate, FiscalPeriod
 FROM _NoLock_FS_FiscalPeriod
-WHERE @startdate  <= PeriodEndDate
+--WHERE @startdate  <= PeriodEndDate
 ORDER BY PeriodEndDate

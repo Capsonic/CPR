@@ -17,6 +17,7 @@ namespace ReportsWEBAPI
 
             var cors = new EnableCorsAttribute("http://apps.capsonic.com", "*", "*");
             //var cors = new EnableCorsAttribute("http://localhost:8000", "*", "*");
+            
             cors.SupportsCredentials = true;
             config.EnableCors(cors);
             
